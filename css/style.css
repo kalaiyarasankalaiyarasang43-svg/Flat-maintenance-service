@@ -1,0 +1,35 @@
+body {
+    background: #f4f6f9;
+}
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8a 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 60px 30px;
+}
+.stat-box {
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+}
+.table thead {
+    background: #1e3a5f;
+    color: #fff;
+}
+.service-icon {
+    font-size: 2rem;
+    color: #2c5f8a;
+}
+.btn-primary {
+    background-color: #1e3a5f;
+    border-color: #1e3a5f;
+}
+.btn-primary:hover {
+    background-color: #2c5f8a;
+    border-color: #2c5f8a;
+}

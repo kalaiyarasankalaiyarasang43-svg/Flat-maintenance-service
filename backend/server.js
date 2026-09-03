@@ -1,0 +1,39 @@
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// Routes will be imported here
+const authRoutes = require('./routes/auth');
+const flatsRoutes = require('./routes/flats');
+const servicesRoutes = require('./routes/services');
+const requestsRoutes = require('./routes/requests');
+const complaintsRoutes = require('./routes/complaints');
+const workersRoutes = require('./routes/workers');
+const adminRoutes = require('./routes/admin');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/flats', flatsRoutes);
+app.use('/api/services', servicesRoutes);
+app.use('/api/requests', requestsRoutes);
+app.use('/api/complaints', complaintsRoutes);
+app.use('/api/workers', workersRoutes);
+app.use('/api/admin', adminRoutes);
+
+// Serve frontend in production (Single Port)
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
