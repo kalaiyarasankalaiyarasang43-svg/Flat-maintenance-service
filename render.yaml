@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: flat-maintenance-app
+    name: flat-maintenance-api
     env: node
-    buildCommand: "cd frontend && npm install && npm run build && cd ../backend && npm install"
+    buildCommand: "cd backend && npm install"
     startCommand: "cd backend && npm start"
     envVars:
       - key: PORT
@@ -17,3 +17,15 @@ services:
         sync: false
       - key: DB_NAME
         sync: false
+
+  - type: web
+    name: flat-maintenance-frontend
+    env: static
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "frontend/dist"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: flat-maintenance-api
+          envVarKey: RENDER_EXTERNAL_URL

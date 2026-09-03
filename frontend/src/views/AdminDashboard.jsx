@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Users, Wrench, AlertCircle } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const AdminDashboard = () => {
   const [stats, setStats] = useState({ users: 0, workers: 0, requests: 0, complaints: 0 });
   const [requests, setRequests] = useState([]);
@@ -14,10 +15,10 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       const [statsRes, reqsRes, workersRes, complaintsRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/admin/overview', { headers }),
-        axios.get('http://localhost:5000/api/admin/requests', { headers }),
-        axios.get('http://localhost:5000/api/admin/workers', { headers }),
-        axios.get('http://localhost:5000/api/complaints', { headers })
+        axios.get(`${API_URL}/api/admin/overview`, { headers }),
+        axios.get(`${API_URL}/api/admin/requests`, { headers }),
+        axios.get(`${API_URL}/api/admin/workers`, { headers }),
+        axios.get(`${API_URL}/api/complaints`, { headers })
       ]);
       setStats(statsRes.data);
       setRequests(reqsRes.data);
@@ -33,7 +34,7 @@ const AdminDashboard = () => {
   const assignWorker = async (reqId, workerId) => {
     if (!workerId) return;
     try {
-      await axios.put(`http://localhost:5000/api/admin/requests/${reqId}/assign`, { worker_id: workerId }, { headers });
+      await axios.put(`${API_URL}/api/admin/requests/${reqId}/assign`, { worker_id: workerId }, { headers });
       fetchData();
     } catch (err) {
       console.error(err);
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
 
   const resolveComplaint = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/complaints/${id}/resolve`, {}, { headers });
+      await axios.put(`${API_URL}/api/admin/complaints/${id}/resolve`, {}, { headers });
       fetchData();
     } catch (err) {
       console.error(err);

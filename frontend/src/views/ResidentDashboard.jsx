@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Plus, Home, Wrench } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const ResidentDashboard = () => {
   const [flats, setFlats] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -18,9 +19,9 @@ const ResidentDashboard = () => {
   const fetchData = async () => {
     try {
       const [flatsRes, reqsRes, srvsRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/flats', { headers }),
-        axios.get('http://localhost:5000/api/requests', { headers }),
-        axios.get('http://localhost:5000/api/services', { headers })
+        axios.get(`${API_URL}/api/flats`, { headers }),
+        axios.get(`${API_URL}/api/requests`, { headers }),
+        axios.get(`${API_URL}/api/services`, { headers })
       ]);
       setFlats(flatsRes.data);
       setRequests(reqsRes.data);
@@ -34,14 +35,14 @@ const ResidentDashboard = () => {
 
   const handleAddFlat = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/api/flats', newFlat, { headers });
+    await axios.post(`${API_URL}/api/flats`, newFlat, { headers });
     setShowAddFlat(false);
     fetchData();
   };
 
   const handleAddRequest = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/api/requests', newReq, { headers });
+    await axios.post(`${API_URL}/api/requests`, newReq, { headers });
     setShowAddRequest(false);
     fetchData();
   };

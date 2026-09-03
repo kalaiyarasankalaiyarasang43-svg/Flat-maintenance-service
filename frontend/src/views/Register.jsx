@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { User, Mail, Phone, KeyRound } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', role: 'user', specialization: '' });
   const [error, setError] = useState('');
@@ -12,7 +13,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', formData);
+      await axios.post(`${API_URL}/api/auth/register`, formData);
       setSuccess('Registration successful! You can now login.');
       setError('');
       setTimeout(() => navigate('/login'), 2000);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Wrench, CheckCircle } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const WorkerDashboard = () => {
   const [requests, setRequests] = useState([]);
   const token = localStorage.getItem('token');
@@ -9,7 +10,7 @@ const WorkerDashboard = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/workers/requests', { headers });
+      const res = await axios.get(`${API_URL}/api/workers/requests`, { headers });
       setRequests(res.data);
     } catch (err) {
       console.error(err);
@@ -20,7 +21,7 @@ const WorkerDashboard = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/workers/requests/${id}`, { status }, { headers });
+      await axios.put(`${API_URL}/api/workers/requests/${id}`, { status }, { headers });
       fetchRequests();
     } catch (err) {
       console.error(err);
@@ -29,7 +30,7 @@ const WorkerDashboard = () => {
 
   const claimTask = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/workers/requests/${id}/claim`, {}, { headers });
+      await axios.put(`${API_URL}/api/workers/requests/${id}/claim`, {}, { headers });
       fetchRequests();
     } catch (err) {
       console.error(err);
