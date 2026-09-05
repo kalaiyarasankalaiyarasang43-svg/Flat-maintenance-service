@@ -14,6 +14,10 @@ app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.json({ service: 'flat-maintenance-api', status: 'ok' });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
