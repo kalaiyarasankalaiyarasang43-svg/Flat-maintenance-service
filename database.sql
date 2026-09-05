@@ -104,7 +104,7 @@ CREATE TABLE complaints (
 
 -- ---------------------------
 -- DEFAULT ADMIN LOGIN
--- Email: admin@flatcare.com | Password: admin123
+-- Email: admin@flatcare.com | Password: Kalai@2008
 -- ---------------------------
 INSERT INTO admins (name, email, password) VALUES
 ('Super Admin', 'admin@flatcare.com', '$2b$12$6YJ9sXhNifnVDCdSBu.jB.309yqmmNQbqZtKdptWBYk3sRW2UkB7O');

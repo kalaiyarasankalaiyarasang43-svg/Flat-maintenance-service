@@ -2,10 +2,27 @@ import React from 'react';
 import { Outlet, NavLink, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Home, Wrench, Users, LogOut, Settings } from 'lucide-react';
 
+const getStoredUser = () => {
+  const storedUser = localStorage.getItem('user');
+
+  if (!storedUser || storedUser === 'undefined') {
+    return {};
+  }
+
+  try {
+    const parsedUser = JSON.parse(storedUser);
+    return parsedUser && typeof parsedUser === 'object' ? parsedUser : {};
+  } catch {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    return {};
+  }
+};
+
 const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = getStoredUser();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
