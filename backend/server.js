@@ -4,9 +4,19 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
+const corsOptions = {
+  origin: [/\.onrender\.com$/, /^http:\/\/localhost(?::\d+)?$/],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 // Routes will be imported here
 const authRoutes = require('./routes/auth');
