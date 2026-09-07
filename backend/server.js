@@ -39,12 +39,24 @@ app.use('/api/complaints', complaintsRoutes);
 app.use('/api/workers', workersRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Serve frontend in production (Single Port)
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Serve frontend in production (Single Port if built)
+const frontendDist = path.join(__dirname, '../frontend/dist');
+const fs = require('fs');
+if (fs.existsSync(path.join(frontendDist, 'index.html'))) {
+  app.use(express.static(frontendDist));
+  app.use((req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('Flat Maintenance API is running.');
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 
