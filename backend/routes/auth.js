@@ -8,17 +8,22 @@ router.post('/login', async (req, res) => {
   const { email, password, role } = req.body;
   if (!email || !password || !role) return res.status(400).json({ error: 'Missing fields' });
 
-  try {
-    let table = 'users';
-    if (role === 'worker') table = 'workers';
-    if (role === 'admin') table = 'admins';
+  const tableByRole = { user: 'users', worker: 'workers', admin: 'admins' };
+  const table = tableByRole[role];
+  if (!table) return res.status(400).json({ error: 'Invalid role' });
 
+  try {
     const [rows] = await db.query(`SELECT * FROM ${table} WHERE email = ?`, [email]);
     if (rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' });
 
     const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not configured');
+      return res.status(503).json({ error: 'Authentication service is not configured' });
+    }
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: role },
@@ -33,6 +38,9 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+      return res.status(503).json({ error: 'Database unavailable. Check the backend database configuration.' });
+    }
     res.status(500).json({ error: 'Server error' });
   }
 });
