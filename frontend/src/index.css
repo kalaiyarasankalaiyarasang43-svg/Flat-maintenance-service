@@ -272,7 +272,29 @@ h1, h2, h3, h4, h5, h6 {
 
 .auth-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 620px;
+  border-radius: 24px;
+  padding: 28px 28px 24px;
+}
+
+.auth-error {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  margin: 0 0 20px;
+  border-radius: 14px;
+  background: rgba(239, 68, 68, 0.18);
+  color: #ef4444;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(239, 68, 68, 0.18);
+}
+
+.btn {
+  min-height: 58px;
+  border-radius: 14px;
+  font-size: 1.1rem;
 }
 
 /* Animations */
