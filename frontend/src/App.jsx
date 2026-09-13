@@ -5,17 +5,18 @@ import Register from './views/Register';
 import ResidentDashboard from './views/ResidentDashboard';
 import WorkerDashboard from './views/WorkerDashboard';
 import AdminDashboard from './views/AdminDashboard';
+import Home from './views/Home';
 import Layout from './components/Layout';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/login" replace />} />
+        <Route element={<Layout />}>
           <Route path="resident" element={<ResidentDashboard />} />
           <Route path="worker" element={<WorkerDashboard />} />
           <Route path="admin" element={<AdminDashboard />} />

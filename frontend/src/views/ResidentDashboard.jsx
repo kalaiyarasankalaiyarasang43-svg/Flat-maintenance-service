@@ -3,6 +3,19 @@ import axios from 'axios';
 import { Plus, Home, Wrench } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const serviceImages = {
+  water: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=700&q=85',
+  electricity: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=700&q=85',
+  painting: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=700&q=85',
+  mason: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=700&q=85'
+};
+
+const getServiceImage = (name = '') => {
+  const key = name.toLowerCase();
+  return Object.entries(serviceImages).find(([service]) => key.includes(service))?.[1]
+    || 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=700&q=85';
+};
+
 const ResidentDashboard = () => {
   const [flats, setFlats] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -97,6 +110,31 @@ const ResidentDashboard = () => {
         </div>
       )}
 
+      <section className="service-gallery" aria-label="Available maintenance services">
+        <div className="service-gallery-heading">
+          <div>
+            <h3>Maintenance Services</h3>
+            <p className="text-secondary">Choose a service when your home needs attention.</p>
+          </div>
+        </div>
+        <div className="service-gallery-grid">
+          {services.map(service => (
+            <button
+              type="button"
+              className="service-image-card"
+              key={service.id}
+              onClick={() => {
+                setNewReq({ ...newReq, service_id: String(service.id) });
+                setShowAddRequest(true);
+              }}
+            >
+              <img src={getServiceImage(service.name)} alt={`${service.name} service`} />
+              <span>{service.name}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
       <div className="grid grid-cols-2">
         <div className="glass-card">
           <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
@@ -106,6 +144,11 @@ const ResidentDashboard = () => {
             <div className="grid">
               {flats.map(f => (
                 <div key={f.id} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--border-glass)' }}>
+                  <img
+                    className="flat-property-image"
+                    src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=85"
+                    alt="Apartment building"
+                  />
                   <h4>{f.flat_number} - {f.block_name}</h4>
                   <p className="text-secondary" style={{ fontSize: '0.9rem', marginTop: '4px' }}>Floor {f.floor_number}</p>
                 </div>
