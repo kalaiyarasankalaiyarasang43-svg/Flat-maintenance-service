@@ -391,6 +391,8 @@ h1, h2, h3, h4, h5, h6 {
 .service-image-card span { display: block; padding-inline: 14px; }
 .home-footer { display: flex; justify-content: space-between; padding-top: 22px; color: #8aa09e; font-size: .75rem; }
 .home-footer span:first-child { color: #1e7b68; font-weight: 700; }
+.admin-login-link { display: block; margin: 18px auto 0; padding: 0; border: 0; background: transparent; font: inherit; cursor: pointer; }
+.admin-role-display { display: flex; align-items: center; color: var(--text-primary); }
 
 @media (max-width: 760px) {
   .home-page { padding-inline: 20px; }

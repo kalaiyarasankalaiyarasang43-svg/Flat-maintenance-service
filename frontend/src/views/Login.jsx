@@ -17,6 +17,7 @@ const Login = () => {
     role: 'admin'
   });
   const [error, setError] = useState('');
+  const [adminLogin, setAdminLogin] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -51,19 +52,22 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Select Role</label>
-            <select
-              className="form-select"
-              value={formData.role}
-              onChange={(e) => {
-                const role = e.target.value;
-                setFormData({ ...formData, role, email: demoEmails[role] });
-                setError('');
-              }}
-            >
-              <option value="admin">Admin</option>
-              <option value="user">Resident</option>
-              <option value="worker">Worker</option>
-            </select>
+            {adminLogin ? (
+              <div className="form-input admin-role-display">Admin</div>
+            ) : (
+              <select
+                className="form-select"
+                value={formData.role}
+                onChange={(e) => {
+                  const role = e.target.value;
+                  setFormData({ ...formData, role, email: demoEmails[role] });
+                  setError('');
+                }}
+              >
+                <option value="user">User</option>
+                <option value="worker">Worker</option>
+              </select>
+            )}
           </div>
 
           <div className="form-group">
@@ -102,6 +106,18 @@ const Login = () => {
             Sign In
           </button>
         </form>
+
+        <button
+          type="button"
+          className="text-link admin-login-link"
+          onClick={() => {
+            setAdminLogin(true);
+            setFormData({ ...formData, role: 'admin', email: demoEmails.admin });
+            setError('');
+          }}
+        >
+          {adminLogin ? 'Admin login selected' : 'Admin login'}
+        </button>
 
         <p style={{ textAlign: 'center', marginTop: '24px', color: 'var(--text-secondary)' }}>
           Don't have an account? <Link to="/register" className="text-accent" style={{ textDecoration: 'none', fontWeight: '500' }}>Register here</Link>
