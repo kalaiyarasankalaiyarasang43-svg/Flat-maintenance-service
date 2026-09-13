@@ -12,9 +12,9 @@ const demoEmails = {
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: 'admin@flatcare.com',
+    email: '',
     password: '',
-    role: 'admin'
+    role: 'user'
   });
   const [error, setError] = useState('');
   const [adminLogin, setAdminLogin] = useState(false);
@@ -60,7 +60,7 @@ const Login = () => {
                 value={formData.role}
                 onChange={(e) => {
                   const role = e.target.value;
-                  setFormData({ ...formData, role, email: demoEmails[role] });
+                  setFormData({ ...formData, role, email: role === 'worker' ? '' : demoEmails[role] });
                   setError('');
                 }}
               >
