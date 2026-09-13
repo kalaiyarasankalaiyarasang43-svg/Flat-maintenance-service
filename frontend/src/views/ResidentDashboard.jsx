@@ -92,6 +92,11 @@ const ResidentDashboard = () => {
       {showAddRequest && (
         <div className="glass-card" style={{ marginBottom: '32px' }}>
           <h3>New Service Request</h3>
+          <img
+            className="fault-report-image"
+            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1000&q=85"
+            alt="Maintenance worker repairing a home fault"
+          />
           <form onSubmit={handleAddRequest} style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <select className="form-select" required value={newReq.flat_id} onChange={e => setNewReq({...newReq, flat_id: e.target.value})}>
               <option value="">Select Flat...</option>
@@ -135,7 +140,7 @@ const ResidentDashboard = () => {
         </div>
       </section>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 resident-overview">
         <div className="glass-card">
           <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
             <Home className="text-accent" /> My Flats

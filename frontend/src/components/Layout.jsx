@@ -52,7 +52,7 @@ const Layout = () => {
     <div className="app-container">
       <aside className="sidebar">
         <div>
-          <h2 className="text-gradient" style={{ fontSize: '1.5rem', marginBottom: '8px' }}>FlatCare</h2>
+          <h2 className="text-gradient" style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Flat Maintenance Service</h2>
           <p className="text-secondary" style={{ fontSize: '0.9rem' }}>{user.name}</p>
           <div style={{ marginTop: '4px' }}>
              <span className="badge badge-assigned">{user.role.toUpperCase()}</span>

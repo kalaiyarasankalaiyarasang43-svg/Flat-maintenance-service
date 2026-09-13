@@ -374,6 +374,12 @@ h1, h2, h3, h4, h5, h6 {
 .feature-item h2 { margin-bottom: 7px; color: #17324d; font-size: 1rem; letter-spacing: -.02em; }
 .feature-item p { max-width: 260px; color: #72878b; font-size: .86rem; line-height: 1.55; }
 .flat-property-image { display: block; width: 100%; height: 145px; margin-bottom: 14px; object-fit: cover; border-radius: 7px; }
+.resident-overview { grid-template-columns: minmax(210px, .8fr) minmax(0, 1.5fr); gap: 18px; }
+.resident-overview .glass-card { padding: 18px; }
+.resident-overview .grid { gap: 12px; }
+.resident-overview .flat-property-image { height: 105px; margin-bottom: 10px; }
+.resident-overview .data-table th, .resident-overview .data-table td { padding: 12px 10px; }
+.fault-report-image { display: block; width: 100%; height: 150px; margin-top: 16px; object-fit: cover; border-radius: 12px; }
 .service-gallery { margin-bottom: 32px; }
 .service-gallery-heading { margin-bottom: 16px; }
 .service-gallery-heading h3 { color: var(--text-primary); }
@@ -396,4 +402,5 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 900px) {
   .service-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resident-overview { grid-template-columns: 1fr; }
 }

@@ -25,7 +25,7 @@ const Home = () => (
     <nav className="home-nav" aria-label="Main navigation">
       <Link to="/" className="brand-mark">
         <span className="brand-icon"><HomeIcon size={19} /></span>
-        FlatCare
+        Flat Maintenance Service
       </Link>
       <div className="home-nav-actions">
         <Link to="/login" className="home-login">Sign in</Link>
@@ -47,7 +47,7 @@ const Home = () => (
         <div className="trust-line"><CheckCircle2 size={17} /> Clear updates from request to resolution</div>
       </div>
 
-      <div className="service-preview animate-slide-up" aria-label="FlatCare request preview">
+      <div className="service-preview animate-slide-up" aria-label="Flat Maintenance Service request preview">
         <Link to="/login" className="water-supply-link" aria-label="Report a water supply fault">
           <img
             className="water-supply-image"
@@ -56,7 +56,7 @@ const Home = () => (
           />
           <span className="water-supply-cta">Report water fault <ArrowRight size={16} /></span>
         </Link>
-        <div className="preview-topline"><span>Today at FlatCare</span><span className="live-status"><i /> Live</span></div>
+        <div className="preview-topline"><span>Today at Flat Maintenance Service</span><span className="live-status"><i /> Live</span></div>
         <div className="preview-title">Your home, looked after.</div>
         <div className="preview-request">
           <div className="request-icon"><Wrench size={20} /></div>
@@ -71,7 +71,7 @@ const Home = () => (
       </div>
     </section>
 
-    <section className="feature-strip" aria-label="FlatCare features">
+    <section className="feature-strip" aria-label="Flat Maintenance Service features">
       {features.map(({ icon: Icon, title, description }) => (
         <article className="feature-item" key={title}>
           <div className="feature-icon"><Icon size={21} /></div>
@@ -80,7 +80,7 @@ const Home = () => (
       ))}
     </section>
 
-    <footer className="home-footer"><span>FlatCare</span><span>Better maintenance. Better living.</span></footer>
+    <footer className="home-footer"><span>Flat Maintenance Service</span><span>Better maintenance. Better living.</span></footer>
   </main>
 );
 

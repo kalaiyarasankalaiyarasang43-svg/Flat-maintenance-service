@@ -28,7 +28,7 @@ const Register = () => {
       <div className="glass-card auth-card animate-slide-up">
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '8px' }}>Create Account</h1>
-          <p className="text-secondary">Join FlatCare to manage your residence</p>
+          <p className="text-secondary">Join Flat Maintenance Service to manage your residence</p>
         </div>
 
         {error && <div className="badge badge-pending" style={{ display: 'block', padding: '12px', marginBottom: '20px', textAlign: 'center', background: 'rgba(239, 68, 68, 0.2)', color: 'var(--danger)' }}>{error}</div>}
