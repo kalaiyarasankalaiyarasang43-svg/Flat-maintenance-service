@@ -4,6 +4,12 @@ import axios from 'axios';
 import { KeyRound, Mail } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const demoEmails = {
+  admin: 'admin@flatcare.com',
+  worker: 'suresh.elec@flatcare.com',
+  user: ''
+};
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: 'admin@flatcare.com',
@@ -48,7 +54,11 @@ const Login = () => {
             <select
               className="form-select"
               value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              onChange={(e) => {
+                const role = e.target.value;
+                setFormData({ ...formData, role, email: demoEmails[role] });
+                setError('');
+              }}
             >
               <option value="admin">Admin</option>
               <option value="user">Resident</option>

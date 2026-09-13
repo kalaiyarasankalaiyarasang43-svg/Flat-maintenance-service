@@ -107,7 +107,7 @@ CREATE TABLE complaints (
 -- Email: admin@flatcare.com | Password: admin123
 -- ---------------------------
 INSERT INTO admins (name, email, password) VALUES
-('Super Admin', 'admin@flatcare.com', '$2b$12$6YJ9sXhNifnVDCdSBu.jB.309yqmmNQbqZtKdptWBYk3sRW2UkB7O');
+('Super Admin', 'admin@flatcare.com', '$2b$12$0geFzMooCWUVD4Gq.KzOfuGQrKLkFGjmxIdY.K.L0VE2BDRNnC29.');
 
 -- ---------------------------
 -- SAMPLE WORKERS (password for all = worker123)
