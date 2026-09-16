@@ -34,15 +34,18 @@ router.get('/', async (req, res) => {
 
 // Users create requests
 router.post('/', verifyRole(['user']), async (req, res) => {
-  const { flat_id, service_id, description, preferred_time_slot } = req.body;
+  const { flat_id, service_id, preferred_date, description, preferred_time_slot } = req.body;
   const allowedTimeSlots = ['9:30 AM - 12:30 PM', '2:00 PM - 5:00 PM'];
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(preferred_date)) {
+    return res.status(400).json({ error: 'Please select a valid visit date' });
+  }
   if (!allowedTimeSlots.includes(preferred_time_slot)) {
     return res.status(400).json({ error: 'Please select a valid service time slot' });
   }
   try {
     await db.query(
-      'INSERT INTO service_requests (user_id, flat_id, service_id, description, preferred_time_slot) VALUES (?, ?, ?, ?, ?)',
-      [req.user.id, flat_id, service_id, description, preferred_time_slot]
+      'INSERT INTO service_requests (user_id, flat_id, service_id, preferred_date, description, preferred_time_slot) VALUES (?, ?, ?, ?, ?, ?)',
+      [req.user.id, flat_id, service_id, preferred_date, description, preferred_time_slot]
     );
     res.json({ message: 'Request created successfully' });
   } catch (error) {

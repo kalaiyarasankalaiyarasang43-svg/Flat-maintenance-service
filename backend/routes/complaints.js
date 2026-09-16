@@ -25,16 +25,16 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', verifyRole(['user']), async (req, res) => {
-  const { subject, message, worker_id } = req.body;
-  if (!subject || !message) return res.status(400).json({ error: 'Subject and message are required' });
+  const { subject, complaint_date, message, worker_id } = req.body;
+  if (!subject || !message || !/^\d{4}-\d{2}-\d{2}$/.test(complaint_date)) return res.status(400).json({ error: 'Subject, complaint date, and message are required' });
   try {
     if (worker_id) {
       const [workers] = await db.query('SELECT id FROM workers WHERE id = ?', [worker_id]);
       if (workers.length === 0) return res.status(400).json({ error: 'Selected worker was not found' });
     }
     await db.query(
-      'INSERT INTO complaints (user_id, worker_id, subject, message) VALUES (?, ?, ?, ?)',
-      [req.user.id, worker_id || null, subject, message]
+      'INSERT INTO complaints (user_id, worker_id, subject, complaint_date, message) VALUES (?, ?, ?, ?, ?)',
+      [req.user.id, worker_id || null, subject, complaint_date, message]
     );
     res.json({ message: 'Complaint lodged' });
   } catch (error) {

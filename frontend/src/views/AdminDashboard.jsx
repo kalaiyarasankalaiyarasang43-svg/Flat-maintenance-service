@@ -9,6 +9,7 @@ const serviceImages = {
   mason: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=700&q=85'
 };
 const getServiceImage = (name = '') => Object.entries(serviceImages).find(([key]) => name.toLowerCase().includes(key))?.[1];
+const formatDateDay = (date) => date ? new Date(`${date}T00:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : 'Date not selected';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const AdminDashboard = () => {
@@ -88,13 +89,13 @@ const AdminDashboard = () => {
     if (activePanel === 'requests') {
       return requests.length ? <div className="admin-modal-list">{requests.map(request => (
         <div className="admin-modal-item" key={request.id}>
-          <strong>Request ID: #{request.id} · {request.service_name}</strong><span>Resident: {request.resident_name} (User ID: #{request.user_id})</span><span>Flat: {request.flat_number}</span><span>Time: {request.preferred_time_slot || 'Not selected'}</span><span>Status: {request.status}</span><span>Worker: {request.worker_name || 'Unassigned'}</span>
+          <strong>Request ID: #{request.id} · {request.service_name}</strong><span>Resident: {request.resident_name} (User ID: #{request.user_id})</span><span>Flat: {request.flat_number}</span><span>Date: {formatDateDay(request.preferred_date)}</span><span>Time: {request.preferred_time_slot || 'Not selected'}</span><span>Status: {request.status}</span><span>Worker: {request.worker_name || 'Unassigned'}</span>
         </div>
       ))}</div> : <p className="text-secondary">No service requests found.</p>;
     }
     return complaints.length ? <div className="admin-modal-list">{complaints.map(complaint => (
       <div className="admin-modal-item" key={complaint.id}>
-        <strong>Complaint #{complaint.id}: {complaint.subject}</strong><span>Resident: {complaint.resident_name}</span><span>{complaint.message}</span><span>Worker: {complaint.worker_name || 'Not specified'}</span><span>Status: {complaint.status}</span>
+        <strong>Complaint #{complaint.id}: {complaint.subject}</strong><span>Resident: {complaint.resident_name}</span><span>Date: {formatDateDay(complaint.complaint_date)}</span><span>{complaint.message}</span><span>Worker: {complaint.worker_name || 'Not specified'}</span><span>Status: {complaint.status}</span>
       </div>
     ))}</div> : <p className="text-secondary">No complaints found.</p>;
   };

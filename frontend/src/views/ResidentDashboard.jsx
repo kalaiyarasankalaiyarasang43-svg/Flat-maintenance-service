@@ -26,8 +26,8 @@ const ResidentDashboard = () => {
   const [showAddComplaint, setShowAddComplaint] = useState(false);
   
   const [newFlat, setNewFlat] = useState({ flat_number: '', floor_number: '', block_name: '', address: '', phone: '' });
-  const [newReq, setNewReq] = useState({ flat_id: '', service_id: '', description: '', preferred_time_slot: '' });
-  const [newComplaint, setNewComplaint] = useState({ subject: '', message: '', worker_id: '' });
+  const [newReq, setNewReq] = useState({ flat_id: '', service_id: '', preferred_date: '', description: '', preferred_time_slot: '' });
+  const [newComplaint, setNewComplaint] = useState({ subject: '', complaint_date: '', message: '', worker_id: '' });
 
   const token = localStorage.getItem('token');
   const headers = { Authorization: `Bearer ${token}` };
@@ -74,6 +74,8 @@ const ResidentDashboard = () => {
   };
 
   const selectedService = services.find(service => String(service.id) === String(newReq.service_id));
+  const formatDateDay = (date) => date ? new Date(`${date}T00:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div className="animate-slide-up">
@@ -124,6 +126,11 @@ const ResidentDashboard = () => {
               <option value="">Select Service Type...</option>
               {services.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
+            <div className="date-picker-field">
+              <label className="form-label" htmlFor="request-date">Select Visit Date</label>
+              <input id="request-date" className="form-input" type="date" min={today} required value={newReq.preferred_date} onChange={e => setNewReq({...newReq, preferred_date: e.target.value})} />
+              {newReq.preferred_date && <span className="date-day-label">{formatDateDay(newReq.preferred_date)}</span>}
+            </div>
             <div className="time-slot-picker" role="group" aria-label="Select visit time">
               <p className="form-label" style={{ marginBottom: 0 }}>Select Visit Time</p>
               <div className="time-slot-options">
@@ -159,6 +166,11 @@ const ResidentDashboard = () => {
           <h3>Report a Complaint</h3>
           <form onSubmit={handleAddComplaint} style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <input className="form-input" placeholder="Complaint subject" required value={newComplaint.subject} onChange={e => setNewComplaint({ ...newComplaint, subject: e.target.value })} />
+            <div className="date-picker-field">
+              <label className="form-label" htmlFor="complaint-date">Complaint Date</label>
+              <input id="complaint-date" className="form-input" type="date" max={today} required value={newComplaint.complaint_date} onChange={e => setNewComplaint({ ...newComplaint, complaint_date: e.target.value })} />
+              {newComplaint.complaint_date && <span className="date-day-label">{formatDateDay(newComplaint.complaint_date)}</span>}
+            </div>
             <select className="form-select" value={newComplaint.worker_id} onChange={e => setNewComplaint({ ...newComplaint, worker_id: e.target.value })}>
               <option value="">Select worker (optional)</option>
               {[...new Map(requests.filter(request => request.worker_id).map(request => [request.worker_id, request])).values()].map(request => (
@@ -231,7 +243,7 @@ const ResidentDashboard = () => {
               <tr>
                 <th>Service</th>
                 <th>Flat</th>
-                <th>Visit Time</th>
+                <th>Visit Date &amp; Time</th>
                 <th>Worker Contact</th>
                 <th>Status</th>
               </tr>
@@ -241,7 +253,11 @@ const ResidentDashboard = () => {
                 <tr key={r.id}>
                   <td><span className="request-service-cell"><img src={getServiceImage(r.service_name)} alt="" />{r.service_name}</span></td>
                   <td>{r.flat_number}</td>
-                  <td><span className="time-slot-badge">{r.preferred_time_slot || 'Not selected'}</span></td>
+                  <td>
+                    <span className="time-slot-badge">{r.preferred_date ? formatDateDay(r.preferred_date) : 'Date not selected'}</span>
+                    <br />
+                    <span className="text-secondary">{r.preferred_time_slot || 'Time not selected'}</span>
+                  </td>
                   <td>{r.worker_name ? <span className="worker-contact"><strong>{r.worker_name}</strong><a href={`tel:${r.worker_phone}`}>{r.worker_phone}</a></span> : <span className="text-secondary">Not assigned</span>}</td>
                   <td>
                     <span className={`badge badge-${r.status.toLowerCase().replace(' ', '-')}`}>
@@ -266,7 +282,7 @@ const ResidentDashboard = () => {
           <div className="complaint-list">
             {complaints.map(complaint => (
               <div className="complaint-item" key={complaint.id}>
-                <div><strong>{complaint.subject}</strong><p>{complaint.message}</p></div>
+                <div><strong>{complaint.subject}</strong><p>{complaint.complaint_date ? formatDateDay(complaint.complaint_date) : 'Date not available'}</p><p>{complaint.message}</p></div>
                 <span className={`badge badge-${complaint.status.toLowerCase()}`}>{complaint.status}</span>
               </div>
             ))}
