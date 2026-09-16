@@ -23,7 +23,7 @@ router.get('/overview', async (req, res) => {
 router.get('/requests', async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT sr.*, s.name as service_name, f.flat_number, f.block_name, u.name as resident_name, w.name as worker_name 
+      SELECT sr.*, s.name as service_name, f.flat_number, f.block_name, u.name as resident_name, u.email as resident_email, w.name as worker_name 
       FROM service_requests sr
       JOIN services s ON sr.service_id = s.id
       JOIN flats f ON sr.flat_id = f.id
@@ -56,6 +56,16 @@ router.put('/requests/:id/assign', async (req, res) => {
 router.get('/workers', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT id, name, email, phone, specialization, status FROM workers');
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get all residents for the clickable overview card
+router.get('/users', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT id, name, email, phone, created_at FROM users ORDER BY id DESC');
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });

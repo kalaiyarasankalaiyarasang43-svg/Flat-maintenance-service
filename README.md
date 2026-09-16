@@ -55,6 +55,7 @@ architecture: Client Layer (HTML5/CSS3/Bootstrap/JS) → Server Layer (PHP) → 
 | Worker | suresh.elec@flatcare.com        | worker123  |
 | Worker | anitha.paint@flatcare.com       | worker123  |
 | Worker | murugan.mason@flatcare.com      | worker123  |
+| User   | santha@gmail.com                | password   |
 
 Register a new account at `/register.php` to try the User flow.
 

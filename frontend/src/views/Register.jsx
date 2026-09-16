@@ -12,6 +12,11 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!/^\d{10}$/.test(formData.phone)) {
+      setError('Phone number must contain exactly 10 digits');
+      setSuccess('');
+      return;
+    }
     try {
       await axios.post(`${API_URL}/api/auth/register`, formData);
       setSuccess('Registration successful! You can now login.');
@@ -88,6 +93,7 @@ const Register = () => {
             <div style={{ position: 'relative' }}>
               <Phone size={18} style={{ position: 'absolute', left: '16px', top: '14px', color: 'var(--text-secondary)' }} />
               <input type="tel" className="form-input" style={{ paddingLeft: '48px' }} required
+                inputMode="numeric" pattern="[0-9]{10}" maxLength="10" minLength="10" placeholder="10-digit phone number"
                 value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
             </div>
           </div>

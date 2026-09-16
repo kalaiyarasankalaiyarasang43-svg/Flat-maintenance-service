@@ -69,6 +69,8 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   const { name, email, phone, password, role, specialization } = req.body;
   if (!name || !email || !phone || !password || !role) return res.status(400).json({ error: 'Missing fields' });
+  const normalizedPhone = String(phone).trim();
+  if (!/^\d{10}$/.test(normalizedPhone)) return res.status(400).json({ error: 'Phone number must contain exactly 10 digits' });
   
   if (role === 'worker' && !specialization) return res.status(400).json({ error: 'Missing specialization for worker' });
   if (role !== 'user' && role !== 'worker') return res.status(400).json({ error: 'Invalid role' });
@@ -81,9 +83,9 @@ router.post('/register', async (req, res) => {
     const hashed = await bcrypt.hash(password, 12);
     
     if (role === 'worker') {
-      await db.query('INSERT INTO workers (name, email, phone, password, specialization) VALUES (?, ?, ?, ?, ?)', [name, email, phone, hashed, specialization]);
+      await db.query('INSERT INTO workers (name, email, phone, password, specialization) VALUES (?, ?, ?, ?, ?)', [name, email, normalizedPhone, hashed, specialization]);
     } else {
-      await db.query('INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)', [name, email, phone, hashed]);
+      await db.query('INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)', [name, email, normalizedPhone, hashed]);
     }
     
     res.json({ message: 'Registration successful' });

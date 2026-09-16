@@ -7,10 +7,13 @@ router.use(verifyToken);
 
 router.get('/', async (req, res) => {
   try {
-    let query = 'SELECT * FROM complaints';
+    let query = `SELECT c.*, u.name as resident_name, u.email as resident_email,
+      w.name as worker_name, w.phone as worker_phone
+      FROM complaints c JOIN users u ON c.user_id = u.id
+      LEFT JOIN workers w ON c.worker_id = w.id`;
     let params = [];
     if (req.user.role === 'user') {
-      query += ' WHERE user_id = ?';
+      query += ' WHERE c.user_id = ?';
       params.push(req.user.id);
     }
     query += ' ORDER BY created_at DESC';
@@ -22,11 +25,16 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', verifyRole(['user']), async (req, res) => {
-  const { subject, message } = req.body;
+  const { subject, message, worker_id } = req.body;
+  if (!subject || !message) return res.status(400).json({ error: 'Subject and message are required' });
   try {
+    if (worker_id) {
+      const [workers] = await db.query('SELECT id FROM workers WHERE id = ?', [worker_id]);
+      if (workers.length === 0) return res.status(400).json({ error: 'Selected worker was not found' });
+    }
     await db.query(
-      'INSERT INTO complaints (user_id, subject, message) VALUES (?, ?, ?)',
-      [req.user.id, subject, message]
+      'INSERT INTO complaints (user_id, worker_id, subject, message) VALUES (?, ?, ?, ?)',
+      [req.user.id, worker_id || null, subject, message]
     );
     res.json({ message: 'Complaint lodged' });
   } catch (error) {

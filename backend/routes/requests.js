@@ -9,7 +9,7 @@ router.use(verifyToken);
 router.get('/', async (req, res) => {
   try {
     let query = `
-      SELECT sr.*, s.name as service_name, f.flat_number, f.block_name, w.name as worker_name 
+      SELECT sr.*, s.name as service_name, f.flat_number, f.block_name, w.name as worker_name, w.phone as worker_phone 
       FROM service_requests sr
       LEFT JOIN services s ON sr.service_id = s.id
       LEFT JOIN flats f ON sr.flat_id = f.id
@@ -34,11 +34,15 @@ router.get('/', async (req, res) => {
 
 // Users create requests
 router.post('/', verifyRole(['user']), async (req, res) => {
-  const { flat_id, service_id, description } = req.body;
+  const { flat_id, service_id, description, preferred_time_slot } = req.body;
+  const allowedTimeSlots = ['9:30 AM - 12:30 PM', '2:00 PM - 5:00 PM'];
+  if (!allowedTimeSlots.includes(preferred_time_slot)) {
+    return res.status(400).json({ error: 'Please select a valid service time slot' });
+  }
   try {
     await db.query(
-      'INSERT INTO service_requests (user_id, flat_id, service_id, description) VALUES (?, ?, ?, ?)',
-      [req.user.id, flat_id, service_id, description]
+      'INSERT INTO service_requests (user_id, flat_id, service_id, description, preferred_time_slot) VALUES (?, ?, ?, ?, ?)',
+      [req.user.id, flat_id, service_id, description, preferred_time_slot]
     );
     res.json({ message: 'Request created successfully' });
   } catch (error) {

@@ -17,6 +17,11 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- DEMO RESIDENT LOGIN
+-- Email: santha@gmail.com | Password: password
+INSERT INTO users (name, email, phone, password) VALUES
+('Santha', 'santha@gmail.com', '9000000000', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy');
+
 -- ---------------------------
 -- WORKERS
 -- ---------------------------
@@ -51,6 +56,7 @@ CREATE TABLE flats (
     floor_number VARCHAR(10) NOT NULL,
     block_name VARCHAR(50) NOT NULL,
     address VARCHAR(255) NOT NULL,
+    phone VARCHAR(15) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -79,6 +85,7 @@ CREATE TABLE service_requests (
     flat_id INT NOT NULL,
     service_id INT NOT NULL,
     description TEXT,
+    preferred_time_slot VARCHAR(40) NOT NULL DEFAULT '9:30 AM - 12:30 PM',
     worker_id INT DEFAULT NULL,
     status ENUM('Pending','Assigned','In Progress','Completed') DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -95,11 +102,13 @@ CREATE TABLE service_requests (
 CREATE TABLE complaints (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+    worker_id INT DEFAULT NULL,
     subject VARCHAR(150) NOT NULL,
     message TEXT NOT NULL,
     status ENUM('Open','Resolved') DEFAULT 'Open',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (worker_id) REFERENCES workers(id) ON DELETE SET NULL
 );
 
 -- ---------------------------

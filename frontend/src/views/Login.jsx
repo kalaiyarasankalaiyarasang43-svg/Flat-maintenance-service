@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const demoEmails = {
   admin: 'admin@flatcare.com',
   worker: 'suresh.elec@flatcare.com',
-  user: ''
+  user: 'santha@gmail.com'
 };
 
 const Login = () => {

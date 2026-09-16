@@ -23,11 +23,15 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   if (req.user.role !== 'user') return res.status(403).json({ error: 'Only users can add flats' });
-  const { flat_number, floor_number, block_name, address } = req.body;
+  const { flat_number, floor_number, block_name, address, phone } = req.body;
+  const normalizedPhone = String(phone || '').trim();
+  if (!flat_number || !floor_number || !block_name || !address || !/^\d{10}$/.test(normalizedPhone)) {
+    return res.status(400).json({ error: 'Flat details and a valid 10-digit phone number are required' });
+  }
   try {
     await db.query(
-      'INSERT INTO flats (user_id, flat_number, floor_number, block_name, address) VALUES (?, ?, ?, ?, ?)',
-      [req.user.id, flat_number, floor_number, block_name, address]
+      'INSERT INTO flats (user_id, flat_number, floor_number, block_name, address, phone) VALUES (?, ?, ?, ?, ?, ?)',
+      [req.user.id, flat_number, floor_number, block_name, address, normalizedPhone]
     );
     res.json({ message: 'Flat added' });
   } catch (error) {

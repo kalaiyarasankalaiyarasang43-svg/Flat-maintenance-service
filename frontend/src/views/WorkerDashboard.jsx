@@ -58,6 +58,7 @@ const WorkerDashboard = () => {
               <th>Flat</th>
               <th>Resident</th>
               <th>Contact</th>
+              <th>Visit Time</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -69,6 +70,7 @@ const WorkerDashboard = () => {
                 <td>{r.flat_number} ({r.block_name})</td>
                 <td>{r.resident_name}</td>
                 <td>{r.resident_phone}</td>
+                <td><span className="time-slot-badge">{r.preferred_time_slot || 'Not selected'}</span></td>
                 <td>
                   <span className={`badge badge-${r.status.toLowerCase().replace(' ', '-')}`}>
                     {r.status}
@@ -98,7 +100,7 @@ const WorkerDashboard = () => {
             ))}
             {requests.length === 0 && (
               <tr>
-                <td colSpan="6" style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No available or assigned tasks.</td>
+                <td colSpan="7" style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>No available or assigned tasks.</td>
               </tr>
             )}
           </tbody>
